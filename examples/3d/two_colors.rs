@@ -23,7 +23,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     let svg = asset_server.load("neutron_star.svg");
     commands.spawn(Camera3d::default());
     commands.spawn((
-        Svg3d(svg.clone()),
+        Svg3d(svg),
         Origin::Center,
         Transform {
             translation: Vec3::new(0.0, 0.0, -600.0),

@@ -1,10 +1,9 @@
-use crate::resources::{FillTessellator, StrokeTessellator};
-use bevy::app::{App, Plugin};
-
 #[cfg(feature = "2d")]
 use crate::render::svg2d;
 #[cfg(feature = "3d")]
 use crate::render::svg3d;
+use crate::resources::{FillTessellator, StrokeTessellator};
+use bevy::app::{App, Plugin};
 
 /// Plugin that renders [`Svg`](crate::svg::Svg)s in 2D
 pub struct SvgPlugin;

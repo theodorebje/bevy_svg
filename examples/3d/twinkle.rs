@@ -26,7 +26,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         Transform::from_xyz(5.0, 8.0, 8.0).looking_at(Vec3::ZERO, Vec3::Y),
     ));
     commands.spawn((
-        Svg3d(svg.clone()),
+        Svg3d(svg),
         Origin::Center,
         Transform {
             translation: Vec3::new(0.0, 0.0, -1.0),

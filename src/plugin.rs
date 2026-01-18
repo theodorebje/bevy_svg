@@ -11,6 +11,15 @@
 //! [`RenderWorld`](bevy::render::RenderWorld).
 //! Afterwards it is queued in the [`RenderSet::Queue`](bevy::render::RenderSet) for actual drawing/rendering.
 
+use crate::{
+    origin,
+    render::{self, Svg2d, Svg3d},
+    svg::Svg,
+};
+#[cfg(feature = "2d")]
+use bevy::mesh::Mesh2d;
+#[cfg(feature = "3d")]
+use bevy::mesh::Mesh3d;
 use bevy::{
     app::{App, Plugin},
     asset::{AssetEvent, Assets},
@@ -24,18 +33,6 @@ use bevy::{
     log::debug,
     mesh::Mesh,
     prelude::{Last, PostUpdate},
-};
-
-#[cfg(feature = "2d")]
-use bevy::mesh::Mesh2d;
-
-#[cfg(feature = "3d")]
-use bevy::mesh::Mesh3d;
-
-use crate::{
-    origin,
-    render::{self, Svg2d, Svg3d},
-    svg::Svg,
 };
 
 /// Set in which [`Svg`](crate::prelude::Svg2d)s get drawn.

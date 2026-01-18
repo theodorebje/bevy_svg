@@ -1,3 +1,4 @@
+use crate::Convert;
 use bevy::{
     asset::RenderAssetUsages,
     color::{Color, ColorToComponents},
@@ -9,8 +10,6 @@ use lyon_path::math::Point;
 use lyon_tessellation::{
     self, FillVertex, FillVertexConstructor, StrokeVertex, StrokeVertexConstructor,
 };
-
-use crate::Convert;
 
 /// A vertex with all the necessary attributes to be inserted into a Bevy
 /// [`Mesh`](bevy::render::mesh::Mesh).
@@ -103,9 +102,9 @@ pub trait BufferExt<A> {
     fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T);
 }
 
-impl BufferExt<VertexBuffers> for VertexBuffers {
-    fn extend_one(&mut self, item: VertexBuffers) {
-        let offset = self.vertices.len() as u32;
+impl BufferExt<Self> for VertexBuffers {
+    fn extend_one(&mut self, item: Self) {
+        let offset = u32::try_from(self.vertices.len()).expect("too many vertices");
 
         for vert in item.vertices {
             self.vertices.alloc().init(vert);
@@ -115,11 +114,11 @@ impl BufferExt<VertexBuffers> for VertexBuffers {
         }
     }
 
-    fn extend<T: IntoIterator<Item = VertexBuffers>>(&mut self, iter: T) {
-        let mut offset = self.vertices.len() as u32;
+    fn extend<T: IntoIterator<Item = Self>>(&mut self, iter: T) {
+        let mut offset = u32::try_from(self.vertices.len()).expect("too many vertices");
 
         for buf in iter {
-            let num_verts = buf.vertices.len() as u32;
+            let num_verts = u32::try_from(buf.vertices.len()).expect("too many vertices");
             for vert in buf.vertices {
                 self.vertices.alloc().init(vert);
             }

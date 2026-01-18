@@ -1,9 +1,9 @@
-use bevy::color::palettes::css::{GOLD, GREEN};
-use bevy::input::mouse::{MouseScrollUnit, MouseWheel};
-use bevy::text::TextSpanAccess;
 use bevy::{
+    color::palettes::css::{GOLD, GREEN},
     diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin},
+    input::mouse::MouseWheel,
     prelude::*,
+    text::TextSpanAccess,
 };
 use bevy_svg::prelude::*;
 
@@ -92,14 +92,14 @@ fn keyboard_input_system(
     >,
 ) {
     if keyboard_input.just_pressed(KeyCode::KeyV) {
-        for (_, mut visible) in svg_query.iter_mut() {
+        for (_, mut visible) in &mut svg_query {
             *visible = match *visible {
                 Visibility::Hidden => Visibility::Inherited,
                 Visibility::Visible | Visibility::Inherited => Visibility::Hidden,
             };
         }
     } else if keyboard_input.just_pressed(KeyCode::KeyO) {
-        for (mut origin, _) in svg_query.iter_mut() {
+        for (mut origin, _) in &mut svg_query {
             *origin = match origin.as_ref() {
                 Origin::BottomLeft => Origin::BottomRight,
                 Origin::BottomRight => Origin::TopRight,
@@ -214,27 +214,26 @@ fn fps_text_update_system(
         Query<&mut TextSpan, With<FrameTimeText>>,
     )>,
 ) {
-    if let Some(fps) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FPS) {
-        if let Some(fps_smoothed) = fps.smoothed() {
-            if let Ok(mut text) = query.p0().single_mut() {
-                *text.write_span() = format!("{fps_smoothed:.2}");
-            }
-            fps_values.min = fps_values.min.min(fps_smoothed);
-            if let Ok(mut text) = query.p1().single_mut() {
-                *text.write_span() = format!("{:.2}", fps_values.min);
-            }
-            fps_values.max = fps_values.max.max(fps_smoothed);
-            if let Ok(mut text) = query.p2().single_mut() {
-                *text.write_span() = format!("{:.2}", fps_values.max);
-            }
+    if let Some(fps) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FPS)
+        && let Some(fps_smoothed) = fps.smoothed()
+    {
+        if let Ok(mut text) = query.p0().single_mut() {
+            *text.write_span() = format!("{fps_smoothed:.2}");
+        }
+        fps_values.min = fps_values.min.min(fps_smoothed);
+        if let Ok(mut text) = query.p1().single_mut() {
+            *text.write_span() = format!("{:.2}", fps_values.min);
+        }
+        fps_values.max = fps_values.max.max(fps_smoothed);
+        if let Ok(mut text) = query.p2().single_mut() {
+            *text.write_span() = format!("{:.2}", fps_values.max);
         }
     }
-    if let Some(frame_time) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FRAME_TIME) {
-        if let Some(frame_time_smoothed) = frame_time.smoothed() {
-            if let Ok(mut text) = query.p3().single_mut() {
-                *text.write_span() = format!("{frame_time_smoothed:.2}");
-            }
-        }
+    if let Some(frame_time) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FRAME_TIME)
+        && let Some(frame_time_smoothed) = frame_time.smoothed()
+        && let Ok(mut text) = query.p3().single_mut()
+    {
+        *text.write_span() = format!("{frame_time_smoothed:.2}");
     }
 }
 
@@ -286,11 +285,8 @@ pub fn camera_zoom_system(
     mut camera: Query<(Option<Mut<Projection>>, Mut<Transform>), With<Camera>>,
 ) {
     for ev in evr_scroll.read() {
-        for (projection, mut transform) in camera.iter_mut() {
-            let amount = match ev.unit {
-                MouseScrollUnit::Line => ev.y,
-                MouseScrollUnit::Pixel => ev.y,
-            };
+        for (projection, mut transform) in &mut camera {
+            let amount = ev.y;
             if let Some(mut projection) = projection {
                 if let Projection::Orthographic(ref mut projection) = *projection {
                     projection.scale -= if projection.scale <= 1.0 {
@@ -311,7 +307,7 @@ pub fn camera_pan_system(
     input: Res<ButtonInput<KeyCode>>,
     mut camera: Query<Mut<Transform>, With<Camera>>,
 ) {
-    for mut transform in camera.iter_mut() {
+    for mut transform in &mut camera {
         if input.pressed(KeyCode::KeyW) {
             transform.translation.y += 1.0;
         }

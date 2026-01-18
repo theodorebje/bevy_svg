@@ -1,4 +1,9 @@
 #[cfg(feature = "2d")]
+use crate::render::Svg2d;
+#[cfg(feature = "3d")]
+use crate::render::Svg3d;
+use crate::svg::Svg;
+#[cfg(feature = "2d")]
 use bevy::mesh::Mesh2d;
 #[cfg(feature = "3d")]
 use bevy::mesh::Mesh3d;
@@ -14,13 +19,6 @@ use bevy::{
     math::{Vec2, Vec3, Vec3Swizzles},
     transform::components::{GlobalTransform, Transform},
 };
-
-#[cfg(feature = "2d")]
-use crate::render::Svg2d;
-#[cfg(feature = "3d")]
-use crate::render::Svg3d;
-
-use crate::svg::Svg;
 
 #[derive(Clone, Component, Copy, Debug, Default, PartialEq)]
 /// Origin of the coordinate system.
@@ -43,15 +41,16 @@ pub enum Origin {
 impl Origin {
     /// Computes the translation for an origin. The resulting translation needs to be added
     /// to the translation of the SVG.
+    #[must_use]
     pub fn compute_translation(&self, scaled_size: Vec2) -> Vec3 {
         match self {
-            Origin::BottomLeft => Vec3::new(0.0, scaled_size.y, 0.0),
-            Origin::BottomRight => Vec3::new(-scaled_size.x, scaled_size.y, 0.0),
-            Origin::Center => Vec3::new(-scaled_size.x * 0.5, scaled_size.y * 0.5, 0.0),
+            Self::BottomLeft => Vec3::new(0.0, scaled_size.y, 0.0),
+            Self::BottomRight => Vec3::new(-scaled_size.x, scaled_size.y, 0.0),
+            Self::Center => Vec3::new(-scaled_size.x * 0.5, scaled_size.y * 0.5, 0.0),
             // Standard SVG origin is top left, so we don't need to do anything
-            Origin::TopLeft => Vec3::ZERO,
-            Origin::TopRight => Vec3::new(-scaled_size.x, 0.0, 0.0),
-            Origin::Custom(coord) => {
+            Self::TopLeft => Vec3::ZERO,
+            Self::TopRight => Vec3::new(-scaled_size.x, 0.0, 0.0),
+            Self::Custom(coord) => {
                 Vec3::new(-scaled_size.x * coord.0, scaled_size.y * coord.1, 0.0)
             }
         }

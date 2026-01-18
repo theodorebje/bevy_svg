@@ -1,10 +1,9 @@
-use bevy::log::{debug, error};
-use lyon_tessellation::{BuffersBuilder, FillOptions, FillTessellator, StrokeTessellator};
-
 use crate::{
     render::vertex_buffer::{BufferExt, VertexBuffers, VertexConstructor},
     svg::{DrawType, Svg},
 };
+use bevy::log::{debug, error};
+use lyon_tessellation::{BuffersBuilder, FillOptions, FillTessellator, StrokeTessellator};
 
 pub fn generate_buffer(
     svg: &Svg,

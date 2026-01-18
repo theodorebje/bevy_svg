@@ -1,3 +1,4 @@
+use crate::svg::Svg;
 use bevy::{
     asset::{AssetLoader, LoadContext, io::Reader},
     log::debug,
@@ -5,8 +6,6 @@ use bevy::{
     tasks::ConditionalSendFuture,
 };
 use thiserror::Error;
-
-use crate::svg::Svg;
 
 #[derive(Default, TypePath)]
 pub struct SvgAssetLoader;
@@ -68,9 +67,9 @@ pub enum SvgError {
     #[error("invalid file name")]
     InvalidFileName(String),
     #[error("could not read file: {0}")]
-    IoError(#[from] std::io::Error),
+    Io(#[from] std::io::Error),
     #[error("failed to load an SVG: {0}")]
-    SvgError(#[from] usvg::Error),
+    Svg(#[from] usvg::Error),
 }
 
 /// An error that occurs when loading a texture from a file.
