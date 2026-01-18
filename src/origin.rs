@@ -43,6 +43,7 @@ pub enum Origin {
 impl Origin {
     /// Computes the translation for an origin. The resulting translation needs to be added
     /// to the translation of the SVG.
+    #[must_use]
     pub fn compute_translation(&self, scaled_size: Vec2) -> Vec3 {
         match self {
             Origin::BottomLeft => Vec3::new(0.0, scaled_size.y, 0.0),

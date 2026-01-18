@@ -28,7 +28,7 @@ pub struct Svg {
     /// Size of the SVG.
     pub size: Vec2,
     #[reflect(ignore)]
-    /// ViewBox of the SVG.
+    /// `ViewBox` of the SVG.
     pub view_box: ViewBox,
     #[reflect(ignore)]
     /// All paths that make up the SVG.
@@ -40,16 +40,16 @@ pub struct Svg {
 impl Default for Svg {
     fn default() -> Self {
         Self {
-            name: Default::default(),
-            size: Default::default(),
+            name: String::default(),
+            size: Vec2::default(),
             view_box: ViewBox {
                 x: 0.,
                 y: 0.,
                 w: 0.,
                 h: 0.,
             },
-            paths: Default::default(),
-            mesh: Default::default(),
+            paths: Vec::default(),
+            mesh: Handle::default(),
         }
     }
 }
@@ -85,6 +85,7 @@ impl Svg {
     }
 
     /// Creates a bevy mesh from the SVG data.
+    #[must_use]
     pub fn tessellate(&self) -> Mesh {
         let buffer = tessellation::generate_buffer(
             self,
@@ -95,10 +96,25 @@ impl Svg {
     }
 
     pub(crate) fn from_tree(tree: usvg::Tree) -> Svg {
+        let descriptors = Self::collect_descriptors_from_tree(&tree);
         let view_box = tree.root().layer_bounding_box();
         let size = tree.size();
-        let mut descriptors = Vec::new();
 
+        Svg {
+            name: String::default(),
+            size: Vec2::new(size.width(), size.height()),
+            view_box: ViewBox {
+                x: f64::from(view_box.x()),
+                y: f64::from(view_box.y()),
+                w: f64::from(view_box.width()),
+                h: f64::from(view_box.height()),
+            },
+            paths: descriptors,
+            mesh: Handle::default(),
+        }
+    }
+
+    pub(crate) fn collect_descriptors_from_tree(tree: &usvg::Tree) -> Vec<PathDescriptor> {
         #[derive(Copy, Clone)]
         struct NodeContext<'a> {
             node: &'a usvg::Node,
@@ -106,12 +122,11 @@ impl Svg {
             is_text: bool,
         }
 
+        let mut descriptors = Vec::new();
         let mut node_stack = tree
             .root()
             .children()
             .iter()
-            // to make sure we are processing the svg with sibling > descendant priority we reverse it
-            // and reverse the resulting descriptors before returning the final constructed svg
             .rev()
             .map(|node| NodeContext {
                 node,
@@ -132,7 +147,9 @@ impl Svg {
                 usvg::Node::Group(group) => {
                     let transform = transform.pre_concat(group.transform());
                     trace!("group: {:?}", group.id());
-                    if !group.should_isolate() {
+                    if group.should_isolate() {
+                        todo!("group isolate not implemented")
+                    } else {
                         for node in group.children() {
                             node_stack.push_front(NodeContext {
                                 node,
@@ -140,16 +157,12 @@ impl Svg {
                                 is_text: false,
                             });
                         }
-                    } else {
-                        todo!("group isolate not implemented")
                     }
                 }
                 usvg::Node::Text(text) => {
                     trace!("text: {:?}", text.id());
                     let transform = text.abs_transform();
 
-                    // all transforms from here on down are identity
-                    // https://github.com/RazrFalcon/resvg/blob/1a6922d5bfcee9e69e04dc47cb0b586f1ca64a1c/crates/usvg/src/text/flatten.rs#L83-L83
                     let group = text.flattened();
                     for node in group.children() {
                         node_stack.push_front(NodeContext {
@@ -178,7 +191,6 @@ impl Svg {
                         is_stroke: false,
                     };
 
-                    // inverted because we are reversing the list at the end
                     match path.paint_order() {
                         PaintOrder::FillAndStroke => {
                             Self::process_stroke(&mut descriptors, path_with_transform);
@@ -197,19 +209,7 @@ impl Svg {
         }
 
         descriptors.reverse();
-
-        Svg {
-            name: Default::default(),
-            size: Vec2::new(size.width(), size.height()),
-            view_box: ViewBox {
-                x: view_box.x() as f64,
-                y: view_box.y() as f64,
-                w: view_box.width() as f64,
-                h: view_box.height() as f64,
-            },
-            paths: descriptors,
-            mesh: Default::default(),
-        }
+        descriptors
     }
 
     fn process_fill(descriptors: &mut Vec<PathDescriptor>, path_with_transform: PathWithTransform) {
@@ -300,7 +300,7 @@ pub struct PathConvIter<'iter> {
     deferred: Option<PathEvent>,
 }
 
-impl<'iter> Iterator for PathConvIter<'iter> {
+impl Iterator for PathConvIter<'_> {
     type Item = PathEvent;
 
     fn next(&mut self) -> Option<Self::Item> {

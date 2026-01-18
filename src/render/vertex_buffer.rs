@@ -105,7 +105,7 @@ pub trait BufferExt<A> {
 
 impl BufferExt<VertexBuffers> for VertexBuffers {
     fn extend_one(&mut self, item: VertexBuffers) {
-        let offset = self.vertices.len() as u32;
+        let offset = u32::try_from(self.vertices.len()).expect("too many vertices");
 
         for vert in item.vertices {
             self.vertices.alloc().init(vert);
@@ -116,10 +116,10 @@ impl BufferExt<VertexBuffers> for VertexBuffers {
     }
 
     fn extend<T: IntoIterator<Item = VertexBuffers>>(&mut self, iter: T) {
-        let mut offset = self.vertices.len() as u32;
+        let mut offset = u32::try_from(self.vertices.len()).expect("too many vertices");
 
         for buf in iter {
-            let num_verts = buf.vertices.len() as u32;
+            let num_verts = u32::try_from(buf.vertices.len()).expect("too many vertices");
             for vert in buf.vertices {
                 self.vertices.alloc().init(vert);
             }
