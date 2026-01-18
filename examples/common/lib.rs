@@ -214,27 +214,26 @@ fn fps_text_update_system(
         Query<&mut TextSpan, With<FrameTimeText>>,
     )>,
 ) {
-    if let Some(fps) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FPS) {
-        if let Some(fps_smoothed) = fps.smoothed() {
-            if let Ok(mut text) = query.p0().single_mut() {
-                *text.write_span() = format!("{fps_smoothed:.2}");
-            }
-            fps_values.min = fps_values.min.min(fps_smoothed);
-            if let Ok(mut text) = query.p1().single_mut() {
-                *text.write_span() = format!("{:.2}", fps_values.min);
-            }
-            fps_values.max = fps_values.max.max(fps_smoothed);
-            if let Ok(mut text) = query.p2().single_mut() {
-                *text.write_span() = format!("{:.2}", fps_values.max);
-            }
+    if let Some(fps) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FPS)
+        && let Some(fps_smoothed) = fps.smoothed()
+    {
+        if let Ok(mut text) = query.p0().single_mut() {
+            *text.write_span() = format!("{fps_smoothed:.2}");
+        }
+        fps_values.min = fps_values.min.min(fps_smoothed);
+        if let Ok(mut text) = query.p1().single_mut() {
+            *text.write_span() = format!("{:.2}", fps_values.min);
+        }
+        fps_values.max = fps_values.max.max(fps_smoothed);
+        if let Ok(mut text) = query.p2().single_mut() {
+            *text.write_span() = format!("{:.2}", fps_values.max);
         }
     }
-    if let Some(frame_time) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FRAME_TIME) {
-        if let Some(frame_time_smoothed) = frame_time.smoothed() {
-            if let Ok(mut text) = query.p3().single_mut() {
-                *text.write_span() = format!("{frame_time_smoothed:.2}");
-            }
-        }
+    if let Some(frame_time) = diagnostics.get(&FrameTimeDiagnosticsPlugin::FRAME_TIME)
+        && let Some(frame_time_smoothed) = frame_time.smoothed()
+        && let Ok(mut text) = query.p3().single_mut()
+    {
+        *text.write_span() = format!("{frame_time_smoothed:.2}");
     }
 }
 

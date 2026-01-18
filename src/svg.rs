@@ -422,13 +422,13 @@ impl Convert<Color> for &usvg::Stop {
 
 impl<'iter> Convert<PathConvIter<'iter>> for PathWithTransform<'iter> {
     fn convert(self) -> PathConvIter<'iter> {
-        return PathConvIter {
+        PathConvIter {
             iter: self.path.data().segments().peekable(),
             first: Point::new(0.0, 0.0),
             prev: Point::new(0.0, 0.0),
             deferred: None,
             needs_end: false,
-        };
+        }
     }
 }
 
