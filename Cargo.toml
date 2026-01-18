@@ -46,6 +46,13 @@ usvg = "0.46"
 [dev-dependencies]
 bevy = { version = "0.18", default-features = true }
 
+[lints.clippy]
+missing_errors_doc = { level = "allow", priority = 100 }     # Frankly, I can't be bothered to write documentation
+needless_pass_by_value = { priority = 127, level = "allow" } # Bevy freaks out over references
+nursery = { level = "warn", priority = 1 }
+pedantic = { level = "warn", priority = 1 }
+type_complexity = "allow"                                    # Bevy queries are inherently complex
+
 #### 2D examples ####
 [[example]]
 name = "2d_complex_one_color"
