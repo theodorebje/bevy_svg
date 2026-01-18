@@ -31,7 +31,7 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         },
     ));
     commands.spawn((
-        Svg3d(svg.clone()),
+        Svg3d(svg),
         Origin::TopLeft,
         Transform {
             translation: Vec3::new(0.0, 0.0, -600.0),

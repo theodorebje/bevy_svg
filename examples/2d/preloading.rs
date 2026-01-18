@@ -41,7 +41,7 @@ fn run(mut commands: Commands, asset_server: Res<AssetServer>, mut fsm: Local<Tu
             *fsm = TutorialFsm::StartedLoad(handle);
         }
         TutorialFsm::StartedLoad(handle) => {
-            if let Some(LoadState::Loaded) = asset_server.get_load_state(handle) {
+            if matches!(asset_server.get_load_state(handle), Some(LoadState::Loaded)) {
                 *fsm = TutorialFsm::Wait(handle.clone(), 60);
             }
         }

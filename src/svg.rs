@@ -60,10 +60,10 @@ impl Svg {
         bytes: &[u8],
         path: impl Into<PathBuf> + Copy,
         fonts: Option<impl Into<PathBuf>>,
-    ) -> Result<Svg, FileSvgError> {
+    ) -> Result<Self, FileSvgError> {
         let mut fontdb = usvg::fontdb::Database::default();
         fontdb.load_system_fonts();
-        let font_dir = fonts.map_or("./assets".into(), Into::into);
+        let font_dir = fonts.map_or_else(|| "./assets".into(), Into::into);
         debug!("loading fonts in {:?}", font_dir);
         fontdb.load_fonts_dir(font_dir);
 
@@ -81,7 +81,7 @@ impl Svg {
             path: format!("{}", path.into().display()),
         })?;
 
-        Ok(Svg::from_tree(svg_tree))
+        Ok(Self::from_tree(&svg_tree))
     }
 
     /// Creates a bevy mesh from the SVG data.
@@ -95,12 +95,12 @@ impl Svg {
         buffer.convert()
     }
 
-    pub(crate) fn from_tree(tree: usvg::Tree) -> Svg {
-        let descriptors = Self::collect_descriptors_from_tree(&tree);
+    pub(crate) fn from_tree(tree: &usvg::Tree) -> Self {
+        let descriptors = Self::collect_descriptors_from_tree(tree);
         let view_box = tree.root().layer_bounding_box();
         let size = tree.size();
 
-        Svg {
+        Self {
             name: String::default(),
             size: Vec2::new(size.width(), size.height()),
             view_box: ViewBox {

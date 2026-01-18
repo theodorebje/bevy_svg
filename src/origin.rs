@@ -46,13 +46,13 @@ impl Origin {
     #[must_use]
     pub fn compute_translation(&self, scaled_size: Vec2) -> Vec3 {
         match self {
-            Origin::BottomLeft => Vec3::new(0.0, scaled_size.y, 0.0),
-            Origin::BottomRight => Vec3::new(-scaled_size.x, scaled_size.y, 0.0),
-            Origin::Center => Vec3::new(-scaled_size.x * 0.5, scaled_size.y * 0.5, 0.0),
+            Self::BottomLeft => Vec3::new(0.0, scaled_size.y, 0.0),
+            Self::BottomRight => Vec3::new(-scaled_size.x, scaled_size.y, 0.0),
+            Self::Center => Vec3::new(-scaled_size.x * 0.5, scaled_size.y * 0.5, 0.0),
             // Standard SVG origin is top left, so we don't need to do anything
-            Origin::TopLeft => Vec3::ZERO,
-            Origin::TopRight => Vec3::new(-scaled_size.x, 0.0, 0.0),
-            Origin::Custom(coord) => {
+            Self::TopLeft => Vec3::ZERO,
+            Self::TopRight => Vec3::new(-scaled_size.x, 0.0, 0.0),
+            Self::Custom(coord) => {
                 Vec3::new(-scaled_size.x * coord.0, scaled_size.y * coord.1, 0.0)
             }
         }
