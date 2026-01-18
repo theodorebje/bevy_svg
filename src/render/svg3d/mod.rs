@@ -1,3 +1,4 @@
+use crate::{origin::Origin, svg::Svg};
 use bevy::{
     asset::{Handle, uuid_handle},
     ecs::{component::Component, lifecycle::HookContext, world::DeferredWorld},
@@ -5,16 +6,13 @@ use bevy::{
     pbr::MeshMaterial3d,
     shader::Shader,
 };
+pub use plugin::RenderPlugin;
 
 mod plugin;
 
 /// Handle to the custom shader with a unique random ID
 pub const SVG_3D_SHADER_HANDLE: Handle<Shader> =
     uuid_handle!("00000000-0000-0000-762a-bdb74c2a5c66");
-
-pub use plugin::RenderPlugin;
-
-use crate::{origin::Origin, svg::Svg};
 
 /// A component for 3D SVGs.
 #[derive(Component, Default)]

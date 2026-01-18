@@ -1,9 +1,9 @@
-use bevy::color::palettes::css::{GOLD, GREEN};
-use bevy::input::mouse::MouseWheel;
-use bevy::text::TextSpanAccess;
 use bevy::{
+    color::palettes::css::{GOLD, GREEN},
     diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin},
+    input::mouse::MouseWheel,
     prelude::*,
+    text::TextSpanAccess,
 };
 use bevy_svg::prelude::*;
 

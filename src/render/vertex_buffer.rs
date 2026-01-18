@@ -1,3 +1,4 @@
+use crate::Convert;
 use bevy::{
     asset::RenderAssetUsages,
     color::{Color, ColorToComponents},
@@ -9,8 +10,6 @@ use lyon_path::math::Point;
 use lyon_tessellation::{
     self, FillVertex, FillVertexConstructor, StrokeVertex, StrokeVertexConstructor,
 };
-
-use crate::Convert;
 
 /// A vertex with all the necessary attributes to be inserted into a Bevy
 /// [`Mesh`](bevy::render::mesh::Mesh).

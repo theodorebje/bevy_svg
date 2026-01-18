@@ -1,3 +1,4 @@
+use crate::svg::Svg;
 use bevy::{
     asset::{AssetLoader, LoadContext, io::Reader},
     log::debug,
@@ -5,8 +6,6 @@ use bevy::{
     tasks::ConditionalSendFuture,
 };
 use thiserror::Error;
-
-use crate::svg::Svg;
 
 #[derive(Default, TypePath)]
 pub struct SvgAssetLoader;

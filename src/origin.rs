@@ -1,4 +1,9 @@
 #[cfg(feature = "2d")]
+use crate::render::Svg2d;
+#[cfg(feature = "3d")]
+use crate::render::Svg3d;
+use crate::svg::Svg;
+#[cfg(feature = "2d")]
 use bevy::mesh::Mesh2d;
 #[cfg(feature = "3d")]
 use bevy::mesh::Mesh3d;
@@ -14,13 +19,6 @@ use bevy::{
     math::{Vec2, Vec3, Vec3Swizzles},
     transform::components::{GlobalTransform, Transform},
 };
-
-#[cfg(feature = "2d")]
-use crate::render::Svg2d;
-#[cfg(feature = "3d")]
-use crate::render::Svg3d;
-
-use crate::svg::Svg;
 
 #[derive(Clone, Component, Copy, Debug, Default, PartialEq)]
 /// Origin of the coordinate system.

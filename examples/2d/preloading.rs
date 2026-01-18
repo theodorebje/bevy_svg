@@ -1,5 +1,4 @@
-use bevy::asset::LoadState;
-use bevy::prelude::*;
+use bevy::{asset::LoadState, prelude::*};
 use bevy_svg::prelude::*;
 
 #[path = "../common/lib.rs"]

@@ -26,6 +26,15 @@ mod resources;
 mod svg;
 mod util;
 
+#[cfg(any(feature = "2d", feature = "3d"))]
+use crate::plugin::SvgRenderPlugin;
+use crate::{loader::SvgAssetLoader, svg::Svg};
+use bevy::{
+    app::{App, Plugin},
+    asset::AssetApp,
+};
+pub use plugin::SvgSet;
+
 /// Import this module as `use bevy_svg::prelude::*` to get convenient imports.
 pub mod prelude {
     pub use super::{SvgPlugin, SvgSet};
@@ -40,16 +49,6 @@ pub mod prelude {
         FillOptions, FillRule, LineCap, LineJoin, Orientation, StrokeOptions,
     };
 }
-
-pub use plugin::SvgSet;
-
-#[cfg(any(feature = "2d", feature = "3d"))]
-use crate::plugin::SvgRenderPlugin;
-use crate::{loader::SvgAssetLoader, svg::Svg};
-use bevy::{
-    app::{App, Plugin},
-    asset::AssetApp,
-};
 
 /// A plugin that provides resources and a system to draw [`Svg`]s.
 pub struct SvgPlugin;

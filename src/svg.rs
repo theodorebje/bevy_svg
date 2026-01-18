@@ -1,3 +1,4 @@
+use crate::{Convert, loader::FileSvgError, render::tessellation, util};
 use bevy::{
     asset::{Asset, Handle},
     color::Color,
@@ -16,8 +17,6 @@ use usvg::{
     PaintOrder,
     tiny_skia_path::{PathSegment, PathSegmentsIter},
 };
-
-use crate::{Convert, loader::FileSvgError, render::tessellation, util};
 
 /// A loaded and deserialized SVG file.
 #[derive(AsBindGroup, Reflect, Debug, Clone, Asset)]
