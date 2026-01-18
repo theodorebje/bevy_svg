@@ -16,19 +16,6 @@
 //! }
 //! ```
 
-// rustc
-#![deny(future_incompatible, nonstandard_style)]
-#![warn(missing_docs, rust_2018_idioms, unused)]
-#![allow(elided_lifetimes_in_paths)]
-// clippy
-#![warn(
-    clippy::all,
-    clippy::restriction,
-    clippy::pedantic,
-    clippy::nursery,
-    clippy::cargo
-)]
-
 mod loader;
 #[cfg(any(feature = "2d", feature = "3d"))]
 mod origin;
