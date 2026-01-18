@@ -21,8 +21,6 @@ rust-version = "1.88"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = ["2d", "3d"]
-
 2d = ["bevy/bevy_sprite"]
 3d = ["bevy/bevy_pbr"]
 

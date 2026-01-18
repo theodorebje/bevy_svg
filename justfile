@@ -1,14 +1,14 @@
 test:
     cargo test
 
-build:
-    cargo build --features bevy/dynamic_linking
+build *features:
+    cargo build --features bevy/dynamic_linking,{{features}}
 
-check:
-    cargo check --features bevy/dynamic_linking
+check *features:
+    cargo check --features bevy/dynamic_linking,{{features}}
 
-doc:
-    cargo doc --features bevy/dynamic_linking
+doc *features:
+    cargo doc --open --features bevy/dynamic_linking,{{features}}
 
 example dimension example:
     cargo run --example {{dimension}}_{{example}} --features {{dimension}},bevy/dynamic_linking
