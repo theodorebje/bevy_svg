@@ -17,32 +17,25 @@
 //! ```
 
 mod loader;
-#[cfg(any(feature = "2d", feature = "3d"))]
 mod origin;
-#[cfg(any(feature = "2d", feature = "3d"))]
 mod plugin;
 mod render;
 mod resources;
 mod svg;
 mod util;
 
-#[cfg(any(feature = "2d", feature = "3d"))]
-use crate::plugin::SvgRenderPlugin;
-use crate::{loader::SvgAssetLoader, svg::Svg};
+pub use crate::plugin::SvgSet;
+use crate::{loader::SvgAssetLoader, plugin::SvgRenderPlugin, svg::Svg};
 use bevy::{
     app::{App, Plugin},
     asset::AssetApp,
 };
-pub use plugin::SvgSet;
 
 /// Import this module as `use bevy_svg::prelude::*` to get convenient imports.
 pub mod prelude {
     pub use super::{SvgPlugin, SvgSet};
-    #[cfg(any(feature = "2d", feature = "3d"))]
     pub use crate::origin::Origin;
-    #[cfg(feature = "2d")]
     pub use crate::render::Svg2d;
-    #[cfg(feature = "3d")]
     pub use crate::render::Svg3d;
     pub use crate::svg::Svg;
     pub use lyon_tessellation::{
@@ -58,7 +51,6 @@ impl Plugin for SvgPlugin {
     fn build(&self, app: &mut App) {
         app.init_asset::<Svg>()
             .init_asset_loader::<SvgAssetLoader>();
-        #[cfg(any(feature = "2d", feature = "3d"))]
         app.add_plugins(SvgRenderPlugin);
     }
 }

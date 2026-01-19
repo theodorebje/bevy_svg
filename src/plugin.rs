@@ -16,10 +16,6 @@ use crate::{
     render::{self, Svg2d, Svg3d},
     svg::Svg,
 };
-#[cfg(feature = "2d")]
-use bevy::mesh::Mesh2d;
-#[cfg(feature = "3d")]
-use bevy::mesh::Mesh3d;
 use bevy::{
     app::{App, Plugin},
     asset::{AssetEvent, Assets},
@@ -31,7 +27,7 @@ use bevy::{
         system::{Commands, Query, Res, ResMut},
     },
     log::debug,
-    mesh::Mesh,
+    mesh::{Mesh, Mesh2d, Mesh3d},
     prelude::{Last, PostUpdate},
 };
 
@@ -50,23 +46,6 @@ impl Plugin for SvgRenderPlugin {
     }
 }
 
-#[cfg(feature = "2d")]
-#[cfg(not(feature = "3d"))]
-type SvgMeshComponents = (
-    Entity,
-    &'static Handle<Svg>,
-    Option<&'static mut Mesh2dHandle>,
-    Option<()>,
-);
-#[cfg(not(feature = "2d"))]
-#[cfg(feature = "3d")]
-type SvgMeshComponents = (
-    Entity,
-    &'static Handle<Svg>,
-    Option<()>,
-    Option<&'static mut Handle<Mesh>>,
-);
-#[cfg(all(feature = "2d", feature = "3d"))]
 type SvgMeshComponents = (
     Entity,
     Option<&'static Svg2d>,
@@ -102,11 +81,9 @@ fn svg_mesh_linker(
                         "Svg `{}` created. Adding mesh component to entity.",
                         svg.name
                     );
-                    #[cfg(feature = "2d")]
                     if let Some(mut mesh) = mesh_2d {
                         mesh.0 = svg.mesh.clone();
                     }
-                    #[cfg(feature = "3d")]
                     if let Some(mut mesh) = mesh_3d {
                         mesh.0 = svg.mesh.clone();
                     }
@@ -124,13 +101,11 @@ fn svg_mesh_linker(
                         "Svg `{}` modified. Changing mesh component of entity.",
                         svg.name
                     );
-                    #[cfg(feature = "2d")]
                     if let Some(mut mesh) = mesh_2d.filter(|mesh| mesh.0 != svg.mesh) {
                         let old_mesh = mesh.0.clone();
                         mesh.0 = svg.mesh.clone();
                         meshes.remove(&old_mesh);
                     }
-                    #[cfg(feature = "3d")]
                     if let Some(mut mesh) = mesh_3d.filter(|mesh| mesh.0 != svg.mesh) {
                         let old_mesh = mesh.clone();
                         mesh.0 = svg.mesh.clone();
@@ -169,11 +144,9 @@ fn svg_mesh_linker(
             "Svg handle for entity `{:?}` modified. Changing mesh component of entity.",
             entity
         );
-        #[cfg(feature = "2d")]
         if let Some(mut mesh) = mesh_2d {
             mesh.0 = svg.mesh.clone();
         }
-        #[cfg(feature = "3d")]
         if let Some(mut mesh) = mesh_3d {
             mesh.0 = svg.mesh.clone();
         }

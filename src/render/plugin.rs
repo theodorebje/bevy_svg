@@ -1,8 +1,7 @@
-#[cfg(feature = "2d")]
-use crate::render::svg2d;
-#[cfg(feature = "3d")]
-use crate::render::svg3d;
-use crate::resources::{FillTessellator, StrokeTessellator};
+use crate::{
+    render::{svg2d, svg3d},
+    resources::{FillTessellator, StrokeTessellator},
+};
 use bevy::app::{App, Plugin};
 
 /// Plugin that renders [`Svg`](crate::svg::Svg)s in 2D
@@ -12,12 +11,8 @@ impl Plugin for SvgPlugin {
     fn build(&self, app: &mut App) {
         let fill_tess = FillTessellator::default();
         let stroke_tess = StrokeTessellator::default();
-        app.insert_resource(fill_tess).insert_resource(stroke_tess);
-
-        #[cfg(feature = "2d")]
-        app.add_plugins(svg2d::RenderPlugin);
-
-        #[cfg(feature = "3d")]
-        app.add_plugins(svg3d::RenderPlugin);
+        app.insert_resource(fill_tess)
+            .insert_resource(stroke_tess)
+            .add_plugins((svg2d::RenderPlugin, svg3d::RenderPlugin));
     }
 }

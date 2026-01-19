@@ -10,5 +10,5 @@ check:
 doc:
     cargo doc --features bevy/dynamic_linking
 
-example dimension example:
-    cargo run --example {{dimension}}_{{example}} --features {{dimension}},bevy/dynamic_linking
+example example:
+    cargo run --example {{example}} --features bevy/dynamic_linking

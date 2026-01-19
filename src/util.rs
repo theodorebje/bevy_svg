@@ -1,8 +1,7 @@
 pub mod paint {
+    use crate::Convert;
     use bevy::color::{Color, ColorToComponents, Srgba};
     use usvg::BaseGradient;
-
-    use crate::Convert;
 
     trait ToF32Array {
         fn to_f32_array(&self) -> [f32; 4];

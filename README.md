@@ -55,11 +55,6 @@ Copy this to your `Cargo.toml`
 # Stable
 bevy_svg = "0.17.1"
 
-# 2D and 3D are available on default, if you only want/need one, use the following
-bevy_svg = { version = "0.17.1", default-features = false, features = ["2d"] }
-# or
-bevy_svg = { version = "0.17.1", default-features = false, features = ["3d"] }
-
 # Living on the edge (at your own risk 😅)
 bevy_svg = { git = "https://github.com/Weasy666/bevy_svg", branch = "main" }
 ```

@@ -1,12 +1,7 @@
-#[cfg(feature = "2d")]
-use crate::render::Svg2d;
-#[cfg(feature = "3d")]
-use crate::render::Svg3d;
-use crate::svg::Svg;
-#[cfg(feature = "2d")]
-use bevy::mesh::Mesh2d;
-#[cfg(feature = "3d")]
-use bevy::mesh::Mesh3d;
+use crate::{
+    render::{Svg2d, Svg3d},
+    svg::Svg,
+};
 use bevy::{
     asset::Assets,
     ecs::{
@@ -17,6 +12,7 @@ use bevy::{
         system::{Commands, Query, Res},
     },
     math::{Vec2, Vec3, Vec3Swizzles},
+    mesh::{Mesh2d, Mesh3d},
     transform::components::{GlobalTransform, Transform},
 };
 
@@ -62,22 +58,8 @@ pub struct OriginState {
     previous: Origin,
 }
 
-#[cfg(feature = "2d")]
-#[cfg(not(feature = "3d"))]
-type WithSvg = With<Svg2d>;
-#[cfg(not(feature = "2d"))]
-#[cfg(feature = "3d")]
-type WithSvg = With<Svg3d>;
-#[cfg(all(feature = "2d", feature = "3d"))]
 type WithSvg = Or<(With<Svg2d>, With<Svg3d>)>;
 
-#[cfg(feature = "2d")]
-#[cfg(not(feature = "3d"))]
-type WithMesh = With<Mesh2d>;
-#[cfg(not(feature = "2d"))]
-#[cfg(feature = "3d")]
-type WithMesh = With<Mesh3d>;
-#[cfg(all(feature = "2d", feature = "3d"))]
 type WithMesh = Or<(With<Mesh2d>, With<Mesh3d>)>;
 
 /// Checkes if a "new" SVG bundle was added by looking for a missing `OriginState`
@@ -93,13 +75,6 @@ pub fn add_origin_state(
     }
 }
 
-#[cfg(feature = "2d")]
-#[cfg(not(feature = "3d"))]
-type ChangedMesh = Changed<Mesh2d>;
-#[cfg(not(feature = "2d"))]
-#[cfg(feature = "3d")]
-type ChangedMesh = Changed<Mesh3d>;
-#[cfg(all(feature = "2d", feature = "3d"))]
 type ChangedMesh = Or<(Changed<Mesh2d>, Changed<Mesh3d>)>;
 
 /// Gets all SVGs with a changed origin or transform and checks if the origin offset
