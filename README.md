@@ -1,4 +1,5 @@
 # bevy_svg
+
 [![Crates.io](https://img.shields.io/crates/v/bevy_svg.svg)](https://crates.io/crates/bevy_svg)
 [![license](https://img.shields.io/badge/license-Apache-blue.svg)](./LICENSE)
 
@@ -11,18 +12,18 @@ into a vertex buffer, which lastly is convert into a [`Bevy`] mesh and drawn wit
 
 > *Note:* The SVG support is currently rather basic, i'd like to expand that in the future.
 
-
 ## Compatibility
-| `Bevy` version | `bevy_svg` version | Branch      |
-|----------------|--------------------|-------------|
+
+| `Bevy` version | `bevy_svg` version | Branch |
+| -------------- | ------------------ | ------ |
 | [![Crates.io](https://img.shields.io/badge/crates.io-v0.17-orange)](https://crates.io/crates/bevy/0.17) | [![Crates.io](https://img.shields.io/badge/crates.io-v0.17.1-orange)](https://crates.io/crates/bevy-svg/0.17.1) | [`bevy-0.17`](https://github.com/Weasy666/bevy_svg/tree/bevy-0.17) |
 | [![Crates.io](https://img.shields.io/badge/crates.io-v0.16-orange)](https://crates.io/crates/bevy/0.16) | [![Crates.io](https://img.shields.io/badge/crates.io-v0.16.0-rc1-orange)](https://crates.io/crates/bevy-svg/0.16.0-rc1) | [`bevy-0.16`](https://github.com/Weasy666/bevy_svg/tree/bevy-0.16) |
 | [![Crates.io](https://img.shields.io/badge/branch-main-yellow)](https://github.com/bevyengine/bevy) | [![Crates.io](https://img.shields.io/badge/branch-main-yellow)](https://github.com/Weasy666/bevy_svg/) | [`main`](https://github.com/Weasy666/bevy_svg) |
 
 <details><summary>Old versions</summary>
 
-| `Bevy` version | `bevy_svg` version | Branch      |
-|----------------|--------------------|-------------|
+| `Bevy` version | `bevy_svg` version | Branch |
+| -------------- | ------------------ | ------ |
 | [![Crates.io](https://img.shields.io/badge/crates.io-v0.15.1-orange)](https://crates.io/crates/bevy/0.15.1) | [![Crates.io](https://img.shields.io/badge/crates.io-v0.15.1-orange)](https://crates.io/crates/bevy-svg/0.15.1) | [`bevy-0.15`](https://github.com/Weasy666/bevy_svg/tree/bevy-0.15) |
 | [![Crates.io](https://img.shields.io/badge/crates.io-v0.14.0-orange)](https://crates.io/crates/bevy/0.14.0) | [![Crates.io](https://img.shields.io/badge/crates.io-v0.14.0-orange)](https://crates.io/crates/bevy-svg/0.14.0) | [`bevy-0.14`](https://github.com/Weasy666/bevy_svg/tree/bevy-0.14) |
 | [![Crates.io](https://img.shields.io/badge/crates.io-v0.12.0-orange)](https://crates.io/crates/bevy/0.12.0) | [![Crates.io](https://img.shields.io/badge/crates.io-v0.12.0-orange)](https://crates.io/crates/bevy-svg/0.12.0) | [`bevy-0.12`](https://github.com/Weasy666/bevy_svg/tree/bevy-0.12) |
@@ -35,7 +36,6 @@ into a vertex buffer, which lastly is convert into a [`Bevy`] mesh and drawn wit
 | [![Crates.io](https://img.shields.io/badge/crates.io-v0.5.0-orange)](https://crates.io/crates/bevy/0.5.0) | [![Crates.io](https://img.shields.io/badge/crates.io-v0.4.0-orange)](https://crates.io/crates/bevy-svg/0.4.0) | [`bevy-0.5`](https://github.com/Weasy666/bevy_svg/tree/bevy-0.5) |
 
 </details>
-
 
 ## Examples
 
@@ -62,6 +62,7 @@ bevy_svg = { git = "https://github.com/Weasy666/bevy_svg", branch = "main" }
 Then use it like this.
 
 ### 2D
+
 ```rust
 use bevy_svg::prelude::*;
 
@@ -93,6 +94,7 @@ fn setup(
 ```
 
 ### 3D
+
 ```rust
 use bevy_svg::prelude::*;
 
@@ -134,8 +136,8 @@ fn setup(
 
 bevy_svg is licensed under either of the following, at your option:
 
- * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
- * MIT License ([LICENSE-MIT](LICENSE-MIT) or https://choosealicense.com/licenses/mit)
+* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or <https://www.apache.org/licenses/LICENSE-2.0>)
+* MIT License ([LICENSE-MIT](LICENSE-MIT) or <https://choosealicense.com/licenses/mit>)
 
 [`Bevy`]: https://bevyengine.org
 [`bevy_prototype_lyon`]: https://github.com/Nilirad/bevy_prototype_lyon
