@@ -5,7 +5,6 @@ use bevy::{
     mesh::{Indices, Mesh, VertexAttributeValues},
     render::render_resource::PrimitiveTopology,
 };
-use copyless::VecHelper;
 use lyon_path::math::Point;
 use lyon_tessellation::{
     self, FillVertex, FillVertexConstructor, StrokeVertex, StrokeVertexConstructor,
@@ -43,8 +42,8 @@ impl Convert<Mesh> for VertexBuffers {
         let mut colors = Vec::with_capacity(self.vertices.len());
 
         for vert in self.vertices {
-            positions.alloc().init(vert.position);
-            colors.alloc().init(vert.color);
+            positions.push(vert.position);
+            colors.push(vert.color);
         }
 
         let mut mesh = Mesh::new(
@@ -107,10 +106,10 @@ impl BufferExt<Self> for VertexBuffers {
         let offset = u32::try_from(self.vertices.len()).expect("too many vertices");
 
         for vert in item.vertices {
-            self.vertices.alloc().init(vert);
+            self.vertices.push(vert);
         }
         for idx in item.indices {
-            self.indices.alloc().init(idx + offset);
+            self.indices.push(idx + offset);
         }
     }
 
@@ -120,10 +119,10 @@ impl BufferExt<Self> for VertexBuffers {
         for buf in iter {
             let num_verts = u32::try_from(buf.vertices.len()).expect("too many vertices");
             for vert in buf.vertices {
-                self.vertices.alloc().init(vert);
+                self.vertices.push(vert);
             }
             for idx in buf.indices {
-                self.indices.alloc().init(idx + offset);
+                self.indices.push(idx + offset);
             }
             offset += num_verts;
         }

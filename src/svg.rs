@@ -8,7 +8,6 @@ use bevy::{
     reflect::{Reflect, std_traits::ReflectDefault},
     render::render_resource::AsBindGroup,
 };
-use copyless::VecHelper;
 use lyon_path::PathEvent;
 use lyon_tessellation::{FillTessellator, StrokeTessellator, math::Point};
 use std::{collections::VecDeque, iter::Peekable, path::PathBuf, sync::Arc};
@@ -238,7 +237,7 @@ impl Svg {
             usvg::Paint::Pattern(_) => Color::NONE,
         };
 
-        descriptors.alloc().init(PathDescriptor {
+        descriptors.push(PathDescriptor {
             abs_transform: path_with_transform.transform,
             segments: path_with_transform.convert().collect(),
             color,
@@ -258,7 +257,7 @@ impl Svg {
 
         path_with_transform.is_stroke = true;
 
-        descriptors.alloc().init(PathDescriptor {
+        descriptors.push(PathDescriptor {
             segments: path_with_transform.convert().collect(),
             abs_transform: path_with_transform.transform,
             color,
